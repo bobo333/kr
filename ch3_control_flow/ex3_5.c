@@ -3,6 +3,8 @@ doesn't handle int_min cause it gets converted to positive */
 #include <stdio.h>
 #include <limits.h>
 
+#define abs(x) ((x) < 0 ? -1 * (x) : (x))
+
 void itob(int n, char s[], int base);
 void runtest(int x, int b);
 
@@ -33,15 +35,15 @@ void itob(int n, char s[], int base) {
     place_number = 1;
 
     if (n < 0) {
-        n *= -1;
         s[i++] = '-';
     }
 
-    for (divisor = 1; (n / divisor) >= base; divisor *= base, place_number++)
+    for (divisor = 1; abs(n / divisor) >= base; divisor *= base, place_number++)
         ;
 
     do {
         place_value = n / divisor;
+        place_value = abs(place_value);
         
         if (place_value >= 10)
             s[i++] = place_value - 10 + 'A';
