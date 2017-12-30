@@ -1,8 +1,4 @@
-/* convert number to string in various bases
-    prints an extra leading 0 if the number is only 1 place,
-    can't figure out how to fix it, but it does handle the max int
-    min_int must be min_int + 1 because it converts number to positive
- */
+/* convert number to string in various bases */
 #include <stdio.h>
 #include <limits.h>
 
@@ -42,6 +38,12 @@ void itob(int n, char s[], int base) {
 
     for (divisor = base; (n / divisor) >= base; divisor *= base, place_number++)
         ;
+
+    // there's probably a more clever way than a separate if statement here
+    if (n < divisor) {
+        place_number--;
+        divisor /= base;
+    }
 
     do {
         place_value = n / divisor;
