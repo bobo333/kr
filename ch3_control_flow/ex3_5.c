@@ -1,4 +1,5 @@
-/* convert number to string in various bases */
+/* convert number to string in various bases 
+doesn't handle int_min cause it gets converted to positive */
 #include <stdio.h>
 #include <limits.h>
 
@@ -29,21 +30,15 @@ void itob(int n, char s[], int base) {
 
     int i, divisor, place_value, place_number;
     i = 0;
-    place_number = 2;
+    place_number = 1;
 
     if (n < 0) {
         n *= -1;
         s[i++] = '-';
     }
 
-    for (divisor = base; (n / divisor) >= base; divisor *= base, place_number++)
+    for (divisor = 1; (n / divisor) >= base; divisor *= base, place_number++)
         ;
-
-    // there's probably a more clever way than a separate if statement here
-    if (n < divisor) {
-        place_number--;
-        divisor /= base;
-    }
 
     do {
         place_value = n / divisor;
