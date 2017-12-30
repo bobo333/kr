@@ -1,4 +1,8 @@
-/* convert number to string in various bases */
+/* convert number to string in various bases
+    prints an extra leading 0 if the number is only 1 place,
+    can't figure out how to fix it, but it does handle the max int
+    min_int must be min_int + 1 because it converts number to positive
+ */
 #include <stdio.h>
 #include <limits.h>
 
@@ -19,11 +23,8 @@ int main() {
     runtest(10, 16);
     runtest(10, 10);
     runtest(5, 10);
-    // these will blow up because divisor becomes greater than INT_MAX
-    // there's a way to do this not based on place value, but then you have to
-    // reverse the string and that seemed like too much work
-    // runtest(INT_MIN + 1, 16);
-    // runtest(INT_MAX, 16);
+    runtest(INT_MIN + 1, 16);
+    runtest(INT_MAX, 16);
 
     return 0;
 }
@@ -32,17 +33,15 @@ void itob(int n, char s[], int base) {
 
     int i, divisor, place_value, place_number;
     i = 0;
-    place_number = 1;
+    place_number = 2;
 
     if (n < 0) {
         n *= -1;
         s[i++] = '-';
     }
 
-    for (divisor = base; n >= divisor; divisor *= base, place_number++)
+    for (divisor = base; (n / divisor) >= base; divisor *= base, place_number++)
         ;
-    divisor /= base;    // above loop goes until divisor is bigger than base
-                        // must bring it back down to size
 
     do {
         place_value = n / divisor;
